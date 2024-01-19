@@ -5,7 +5,6 @@ import (
 
 	"github.com/capoverflow/ao3api-rod/internals/auth"
 	"github.com/capoverflow/ao3api-rod/internals/models"
-	"github.com/capoverflow/ao3api-rod/internals/utils"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 )
@@ -20,28 +19,12 @@ func Init(config models.RodConfig) {
 
 	// Launch and connect to the browser
 	url := l.MustLaunch()
+	log.Println("browser url:", url)
 	browser := rod.New().ControlURL(url).MustConnect()
 
 	Page = browser.MustPage()
 
-	switch {
-	case len(config.Login.CookiesPath) > 0:
-		log.Println("Using cookies")
-		cookies := utils.GetCookieJar(config.Login.CookiesPath)
-		config.Login.Cookies = utils.ConvertCookies(cookies)
-		err := auth.LoginWithCookies(Page, config.Login.Cookies)
-		if err != nil {
-			log.Panic(err)
-		}
-	case len(config.Login.Username) > 0 && len(config.Login.Password) > 0:
-		log.Println("Using username and password")
-		Page.MustNavigate("https://archiveofourown.org/users/login").MustWaitLoad()
-		err := auth.LoginWithCredentials(Page, config.Login)
-		if err != nil {
-			log.Panic(err)
-		}
-
-	}
+	auth.Login(Page, config.Login)
 
 	Page.Eval(`localStorage.setItem("accepted_tos", "20180523");`)
 
