@@ -1,8 +1,6 @@
 package base
 
 import (
-	"log"
-
 	"github.com/capoverflow/ao3api-rod/internals/auth"
 	"github.com/capoverflow/ao3api-rod/internals/models"
 	"github.com/go-rod/rod"
@@ -14,15 +12,25 @@ var (
 )
 
 func Init(config models.RodConfig) {
-	// 	// Create a launcher with headless option
-	l := launcher.New().Headless(config.Headless)
 
-	// Launch and connect to the browser
-	url := l.MustLaunch()
-	log.Println("browser url:", url)
-	browser := rod.New().ControlURL(url).MustConnect()
+	if config.RemoteURL != "" {
+		// connect to the remote browser
+		browser := rod.New().ControlURL(config.RemoteURL).MustConnect()
+		Page = browser.MustPage()
+		return
+	} else {
 
-	Page = browser.MustPage()
+		// 	// Create a launcher with headless option
+		l := launcher.New().Headless(config.Headless)
+
+		// Launch and connect to the browser
+		url := l.MustLaunch()
+		// log.Println("browser url:", url)
+		browser := rod.New().ControlURL(url).MustConnect()
+
+		Page = browser.MustPage()
+
+	}
 
 	auth.Login(Page, config.Login)
 

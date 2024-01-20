@@ -1,6 +1,7 @@
 package models
 
 type RodConfig struct {
-	Headless bool
-	Login    Login
+	RemoteURL string
+	Headless  bool
+	Login     Login
 }
