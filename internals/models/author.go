@@ -1,9 +1,15 @@
 package models
 
 type AuthorParams struct {
-	Addr     string
-	Author   string
-	AllWorks bool
+	Addr        string
+	Author      string
+	AllWorks    bool
+	Dashboard   bool
+	Profile     bool
+	Bookmark    bool
+	Gift        bool
+	Series      bool
+	Collections bool
 }
 
 type Author struct {
