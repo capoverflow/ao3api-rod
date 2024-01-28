@@ -1,7 +1,9 @@
 package auth
 
 import (
+	"encoding/json"
 	"log"
+	"os"
 
 	"github.com/capoverflow/ao3api-rod/internals/models"
 	"github.com/capoverflow/ao3api-rod/internals/utils"
@@ -28,6 +30,7 @@ func Login(Page *rod.Page, login models.Login) error {
 		if err != nil {
 			log.Panic(err)
 		}
+		Page.MustNavigate("https://archiveofourown.org").MustWaitLoad()
 	case len(login.Username) > 0 && len(login.Password) > 0:
 		log.Println("Using username and password")
 		Page.MustNavigate("https://archiveofourown.org/users/login").MustWaitLoad()
@@ -59,9 +62,23 @@ func LoginWithCredentials(page *rod.Page, login models.Login) error {
 
 	page.MustElement("#user_password").MustInput(password)
 
+	page.MustElement("#user_remember_me").MustClick()
+
 	page.MustElement("#new_user > dl > dd.submit.actions > input").MustClick()
 
 	page.MustWaitLoad()
+
+	return nil
+}
+
+func SaveCookies(page *rod.Page, cookiesPath string) error {
+	cookies := page.MustCookies()
+
+	cookieJson, err := json.MarshalIndent(cookies, "", "  ")
+	if err != nil {
+		log.Println(err)
+	}
+	os.WriteFile(cookiesPath, cookieJson, 0644)
 
 	return nil
 }
