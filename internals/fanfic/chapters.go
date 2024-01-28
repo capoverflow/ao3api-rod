@@ -2,7 +2,6 @@ package fanfic
 
 import (
 	"log"
-	"os"
 	"strings"
 	"time"
 
@@ -14,8 +13,6 @@ import (
 func GetFanficChapters(work models.Work, page *rod.Page) (models.Work, error) {
 
 	html := page.MustWaitIdle().MustHTML()
-
-	os.WriteFile("test.html", []byte(html), 0644)
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
