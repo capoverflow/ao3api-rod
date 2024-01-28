@@ -12,7 +12,7 @@ import (
 )
 
 func GetFanfic(page *rod.Page) (fanfic models.Work) {
-	html := page.MustHTML()
+	html := page.MustWaitIdle().MustHTML()
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
 	if err != nil {
