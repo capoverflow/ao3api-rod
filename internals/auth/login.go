@@ -22,6 +22,13 @@ func IsLoginNeeded() bool {
 func Login(Page *rod.Page, login models.Login) error {
 
 	switch {
+	case len(login.Cookies) > 0:
+		log.Println("Using cookies")
+		err := LoginWithCookies(Page, login.Cookies)
+		if err != nil {
+			log.Panic(err)
+		}
+		Page.MustNavigate("https://archiveofourown.org").MustWaitLoad()
 	case len(login.CookiesPath) > 0:
 		log.Println("Using cookies")
 		cookies := utils.GetCookieJar(login.CookiesPath)
