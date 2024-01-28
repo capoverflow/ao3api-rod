@@ -34,7 +34,18 @@ func Init(config models.RodConfig) {
 
 	auth.Login(Page, config.Login)
 
-	Page.Eval(`localStorage.setItem("accepted_tos", "20180523");`)
+	Page.MustWaitLoad().MustEval(`
+	() => {
+		var acceptedTOS = localStorage.getItem("accepted_tos");
+	
+		if (acceptedTOS === null || acceptedTOS === "") {
+		  acceptedTOS = '20180523';
+		  localStorage.setItem("accepted_tos", acceptedTOS);
+		}
+		
+		console.log(acceptedTOS);
+	};
+	`)
 
 	// reload the Page to make the localStorage work
 	Page.MustReload().MustWaitLoad()
