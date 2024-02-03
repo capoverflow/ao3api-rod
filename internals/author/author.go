@@ -16,8 +16,27 @@ import (
 
 func GetAuthorDashboard(author models.Author, page *rod.Page) models.Author {
 	params := author.AuthorParams
+	if params.Addr == "" {
+		log.Println("No address provided, using default")
+		params.Addr = "archiveofourown.org"
+	}
+	if params.Author == "" {
+		log.Println("No author provided exiting")
+		return author
+	}
+
+	if params.Addr != "" {
+		u, err := url.Parse(params.Addr)
+		if err != nil {
+			log.Println(err)
+		}
+		params.Addr = u.Host
+	}
 	author_url := fmt.Sprintf("https://%s/users/%s", params.Addr, params.Author)
+	log.Println(author_url)
+
 	page.MustNavigate(author_url).MustWaitLoad()
+
 	html := page.MustHTML()
 
 	doc, err := goquery.NewDocumentFromReader(strings.NewReader(html))
