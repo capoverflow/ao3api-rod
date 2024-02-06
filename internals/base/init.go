@@ -3,6 +3,7 @@ package base
 import (
 	"github.com/capoverflow/ao3api-rod/internals/auth"
 	"github.com/capoverflow/ao3api-rod/internals/models"
+	"github.com/capoverflow/ao3api-rod/internals/utils"
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 )
@@ -50,6 +51,8 @@ func Init(config models.RodConfig) {
 		console.log(acceptedTOS);
 	};
 	`)
+
+	utils.CountDown(5)
 
 	// reload the Page to make the localStorage work
 	Page.MustReload().MustWaitLoad()
