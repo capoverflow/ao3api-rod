@@ -27,7 +27,7 @@ func Init(config models.RodConfig) {
 		// Launch and connect to the browser
 		url := l.MustLaunch()
 		// log.Println("browser url:", url)
-		Browser = rod.New().ControlURL(url).MustConnect()
+		Browser = rod.New().ControlURL(url).MustConnect().NoDefaultDevice()
 
 	}
 
