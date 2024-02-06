@@ -13,11 +13,12 @@ var (
 
 func Init(config models.RodConfig) {
 
+	var Browser *rod.Browser
+
 	if config.RemoteURL != "" {
 		// connect to the remote browser
-		browser := rod.New().ControlURL(config.RemoteURL).MustConnect()
-		Page = browser.MustPage()
-		return
+		Browser = rod.New().ControlURL(config.RemoteURL).MustConnect().NoDefaultDevice()
+
 	} else {
 
 		// 	// Create a launcher with headless option
@@ -26,11 +27,14 @@ func Init(config models.RodConfig) {
 		// Launch and connect to the browser
 		url := l.MustLaunch()
 		// log.Println("browser url:", url)
-		browser := rod.New().ControlURL(url).MustConnect()
-
-		Page = browser.MustPage()
+		Browser = rod.New().ControlURL(url).MustConnect()
 
 	}
+
+	// Set browser viewport size
+
+	// Get Blank Page
+	Page = Browser.MustPage("https://archiveofourown.org").MustWaitLoad()
 
 	auth.Login(Page, config.Login)
 
@@ -50,5 +54,4 @@ func Init(config models.RodConfig) {
 	// reload the Page to make the localStorage work
 	Page.MustReload().MustWaitLoad()
 
-	Page.MustWaitLoad()
 }
