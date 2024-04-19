@@ -49,7 +49,7 @@ func ConvertHTTPCookieToRodCookie(cookies []*http.Cookie) []proto.NetworkCookieP
 	return rodCookies
 }
 
-func ConvertRodCookieToHTTPCookie(cookies []proto.NetworkCookie) []*http.Cookie {
+func ConvertRodCookieToHTTPCookie(cookies []*proto.NetworkCookie) []*http.Cookie {
 	var httpCookies []*http.Cookie
 
 	for _, cookie := range cookies {
