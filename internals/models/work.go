@@ -46,3 +46,20 @@ type RequiredTags struct {
 	Relationship   string `bson:""`
 	WorkStatus     string `bson:""`
 }
+
+type Comments struct {
+	Comment []Comments
+}
+
+type Comment struct {
+	Author  Author `bson:"author"`
+	Date    string `bson:"date"`
+	Body    string `bson:"body"`
+	Chapter string `bson:"chapter"`
+	PageNum int    `bson:"pagenum"`
+}
+
+type CommentAuthor struct {
+	Author         string `bson:"author"`
+	ProfilePicture string `bson:"profilepicture"`
+}

@@ -169,6 +169,8 @@ func GetFanfic(page *rod.Page) (fanfic models.Work) {
 
 	})
 
+	log.Println(fanfic)
+
 	// add additional code here
 
 	return fanfic
