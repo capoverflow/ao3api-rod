@@ -32,7 +32,7 @@ func Login(Page *rod.Page, login models.Login) error {
 	case len(login.CookiesPath) > 0:
 		log.Println("Using cookies")
 		cookies := utils.GetCookieJar(login.CookiesPath)
-		login.Cookies = utils.ConvertCookies(cookies)
+		login.Cookies = utils.ConvertHTTPCookieToRodCookie(cookies)
 		err := LoginWithCookies(Page, login.Cookies)
 		if err != nil {
 			log.Panic(err)
