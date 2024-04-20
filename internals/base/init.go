@@ -9,12 +9,11 @@ import (
 )
 
 var (
-	Page *rod.Page
+	Page    *rod.Page
+	Browser *rod.Browser
 )
 
 func Init(config models.RodConfig) {
-
-	var Browser *rod.Browser
 
 	if config.RemoteURL != "" {
 		// connect to the remote browser
