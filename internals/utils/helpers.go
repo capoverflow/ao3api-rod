@@ -93,21 +93,21 @@ func DeduplicateWorks(works []models.Work) []models.Work {
 	return uniqueWorks
 }
 
-func RandSleep(min, max int) {
+func RandSleep(min, max int, unit time.Duration) {
 	n := rand.Intn(max-min) + min
-	log.Printf("Sleeping %d seconds...", n)
+	log.Printf("Sleeping %d %s...", n, unit)
 	for i := n; i > 0; i-- {
 		fmt.Printf("\r%d...", i)
-		time.Sleep(time.Second)
+		time.Sleep(unit)
 	}
 	fmt.Println("\rDone")
 }
 
-func CountDown(n int) {
-	log.Printf("Sleeping %d seconds...", n)
+func CountDown(n int, unit time.Duration) {
+	log.Printf("Sleeping %d %s...", n, unit)
 	for i := n; i > 0; i-- {
 		fmt.Printf("\r%d...", i)
-		time.Sleep(time.Second)
+		time.Sleep(unit)
 	}
 	fmt.Println("\rDone")
 }
@@ -118,6 +118,6 @@ func WaitEveryXIterations(length, currentIndex, x, waitSeconds int) {
 		return // Avoid division by zero or negative values
 	}
 	if currentIndex%x == 0 {
-		CountDown(waitSeconds)
+		CountDown(waitSeconds, time.Second)
 	}
 }

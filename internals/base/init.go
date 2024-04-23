@@ -1,6 +1,8 @@
 package base
 
 import (
+	"time"
+
 	"github.com/capoverflow/ao3api-rod/internals/auth"
 	"github.com/capoverflow/ao3api-rod/internals/models"
 	"github.com/capoverflow/ao3api-rod/internals/utils"
@@ -51,7 +53,7 @@ func Init(config models.RodConfig) {
 	};
 	`)
 
-	utils.CountDown(5)
+	utils.CountDown(1, time.Second)
 
 	// reload the Page to make the localStorage work
 	Page.MustReload().MustWaitLoad()
